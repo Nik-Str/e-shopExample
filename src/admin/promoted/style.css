@@ -1,0 +1,15 @@
+.createPromotedInputContainer {
+  max-width: 50%;
+}
+
+@media only screen and (max-width: 992px) {
+  .createPromotedInputContainer {
+    max-width: 100%;
+  }
+}
+
+.editLinks:hover {
+  color: grey;
+  cursor: pointer;
+  text-decoration: 1px solid underline black;
+}

@@ -68,3 +68,9 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+import { useNavigate } from 'react-router-dom';
+//Get the browsers history and enebles several funcitons
+// navigate(-1) goes back on step in browser history
+// navigate('/') redirect the use to homepage
+const navigate = useNavigate();

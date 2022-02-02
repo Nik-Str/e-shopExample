@@ -26,15 +26,15 @@
   color: grey !important;
 }
 
-#home-bg-sm {
+.home-bg-sm {
   display: none;
 }
 
 @media only screen and (max-width: 768px) {
-  #home-bg-sm {
+  .home-bg-sm {
     display: block;
   }
-  #home-bg-lg {
+  .home-bg-lg {
     display: none !important;
   }
 }

@@ -1,33 +1,24 @@
-/* create new blog form */
-.create {
-  max-width: 400px;
-  margin: 0 auto;
-  text-align: center;
+.adminSelect button {
+  margin: 1%;
+  width: 31%;
+  transition: 0.5s;
 }
-.create label {
-  text-align: left;
-  display: block;
+
+.adminSelect button:hover {
+  background-color: white;
+  color: black;
 }
-.create h2 {
-  font-size: 20px;
-  color: #f1356d;
-  margin-bottom: 30px;
+
+.adminSelectType {
+  max-width: 50%;
 }
-.create input,
-.create textarea,
-.create select {
-  width: 100%;
-  padding: 6px 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  box-sizing: border-box;
-  display: block;
+
+@media only screen and (max-width: 992px) {
+  .adminSelectType {
+    max-width: 100%;
+  }
 }
-.create button {
-  background: #f1356d;
-  color: #fff;
-  border: 0;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
+
+#productsDisplay {
+  display: none;
 }
