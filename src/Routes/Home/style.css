@@ -1,0 +1,47 @@
+.home-container {
+  padding: 0rem;
+  height: 100%;
+  width: 100%;
+}
+
+.videoBg {
+  width: 100%;
+  overflow: hidden;
+}
+
+.home-welcome-div {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  color: white;
+}
+
+.home-welcome-div a {
+  font-size: 1.4rem;
+  text-decoration: none;
+  color: white;
+}
+
+.home-welcome-div button:hover a {
+  color: grey !important;
+}
+
+#home-bg-sm {
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  #home-bg-sm {
+    display: block;
+  }
+  #home-bg-lg {
+    display: none !important;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .home-img-div {
+    margin: auto;
+    max-width: 50%;
+  }
+}

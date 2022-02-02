@@ -1,0 +1,45 @@
+.form-footer {
+  width: 50%;
+}
+
+@media only screen and (max-width: 992px) {
+  .form-footer {
+    width: 100%;
+  }
+}
+
+.footer-form-row {
+  background-image: url('../../img/footer-bg.jpg');
+  height: 10rem;
+}
+
+.footer-end-row {
+  font-size: 0.8rem;
+  background-color: black;
+  color: white;
+}
+
+.soc-icons {
+  transform: scale(1.8);
+  margin: 1rem;
+  transition: 1s;
+  color: grey;
+}
+
+h4 {
+  font-weight: 900;
+}
+
+.soc-icons:hover {
+  transform: scale(2.2);
+  color: black;
+}
+
+.service-links a {
+  text-decoration: none;
+  color: grey;
+}
+
+.service-links a:hover {
+  color: black;
+}

@@ -1,0 +1,64 @@
+header {
+  z-index: 1;
+  position: fixed;
+  top: 0px;
+  width: 100%;
+}
+
+.navbar-container {
+  background-color: black;
+  color: rgb(255, 255, 255);
+}
+
+.nav-icons {
+  max-width: 1rem;
+  color: rgb(150, 150, 150);
+}
+
+.nav-icons-text {
+  font-size: 0.8rem;
+}
+
+.loginLinks a {
+  color: rgb(201, 201, 201);
+  text-decoration: none;
+  transition: 0.8s;
+}
+
+.loginLinks a:hover {
+  color: rgb(150, 150, 150);
+}
+
+.loginLinks .login {
+  color: white;
+  text-decoration: 1px solid underline white;
+}
+
+.form-input {
+  width: 100%;
+}
+
+.nav-link {
+  color: black !important;
+  transition: 0.5s;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+  color: rgb(150, 150, 150) !important;
+  border-radius: 1rem;
+}
+
+.formField {
+  width: 75%;
+}
+
+@media only screen and (max-width: 992px) {
+  .formField {
+    width: 100%;
+  }
+}
+
+.nav-chart-icon {
+  transform: scale(1.4);
+}
