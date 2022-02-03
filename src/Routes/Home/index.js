@@ -36,7 +36,13 @@ const Home = () => {
   });
 
   //Get Promoted items
-  const { data: products, isLoading, isError } = useFetch('http://localhost:8080/promoted');
+  const { data: promoted, isLoading, isError, FetchGet } = useFetch();
+
+  useEffect(() => {
+    FetchGet('http://localhost:8080/promoted');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Container fluid className="home-container bg-light">
       {/* -----------Video BG large screeens-------------- */}
@@ -58,7 +64,7 @@ const Home = () => {
       {/* ------------Highlighted products */}
       {isLoading && <Loading />}
       {isError && <div>{isError}</div>}
-      {products && <Promoted products={products.data} />}
+      {promoted && <Promoted products={promoted.data} />}
 
       {/* -----------Img on payments options-------------- */}
       <div className="home-img-div">

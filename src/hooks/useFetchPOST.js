@@ -1,25 +1,31 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-const useFetchGET = () => {
-  //Data, loading and error states
+function useFetchPost() {
   const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(null);
 
-  //runs initialy and on every dom render if nothing is added,
-  //useEffect runs only once [] initialy,
-  //if a useState[] or other variable is added then it runs first initialy and on every state/variable change
-  const FetchGet = (url) => {
+  const FetchPost = (url, data) => {
+    setIsLoading(true);
     //Add abortController. Is used to abort Fetch if user goes to other page during fetch process. Otherwise fetch still runs in background and cath error
     const abortCont = new AbortController();
 
     //Notice the added 'signal' to the get request, it for the abortController
     axios
-      .get(url, { signal: abortCont.signal })
+      .post(
+        url,
+        data,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+        { signal: abortCont.signal }
+      )
       .then((response) => {
         if (response.status === 201) {
-          setData(response.data);
+          setData(response.data.message);
           setIsLoading(false);
           setIsError(null);
         } else {
@@ -38,7 +44,7 @@ const useFetchGET = () => {
     return () => abortCont.abort();
   };
 
-  return { data, isLoading, isError, FetchGet };
-};
+  return { data, isLoading, isError, FetchPost };
+}
 
-export default useFetchGET;
+export default useFetchPost;

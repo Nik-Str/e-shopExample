@@ -26,7 +26,16 @@ const Create = () => {
   const createRef = useRef(null);
 
   //Get Promoted items
-  const { data: promoted, isLoading, isError } = useFetch('http://localhost:8080/promoted');
+  const { data: promoted, isLoading, isError, FetchGet } = useFetch();
+
+  useEffect(() => {
+    FetchGet('http://localhost:8080/promoted');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleRefresh = () => {
+    FetchGet('http://localhost:8080/promoted');
+  };
 
   return (
     <>
@@ -42,7 +51,7 @@ const Create = () => {
         <hr />
         {/* -----------------Promoted handlers-------------------- */}
         <div id="promotedDisplay">
-          <PromotedInput />
+          <PromotedInput handleRefresh={handleRefresh} />
           <hr className="mb-0" />
           {/* Highlighted products preview */}
           {isLoading && <Loading />}

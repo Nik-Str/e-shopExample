@@ -7,64 +7,52 @@ import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 //Dep
 import axios from 'axios';
+//custom hooks
+import useFetchPost from '../../hooks/useFetchPOST';
+//Components
+import Toast from 'react-bootstrap/Toast';
 //Css
 import './style.css';
 
-const Promoted = () => {
+const Promoted = ({ handleRefresh }) => {
   //useState in this examples tracks the changes for the inputs.
   //This replaces document.querrySelector().value and makes it's easy to work the values from the input
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const fileRef = useRef(null);
 
-  //States for add
-  const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(null);
+  //Display och not display toast
+  const [isShow, setIsShow] = useState(false);
 
   //Containers / refs for switching between add and delete forms
   const addRef = useRef(null);
   const deleteRef = useRef(null);
 
+  //States for add
+  const { data, isLoading, isError, FetchPost } = useFetchPost();
+
   const handleAddSubmit = (e) => {
     e.preventDefault();
 
-    setIsLoading(true);
-
     //Upload
-    var imageFile = fileRef.current;
+    let imageFile = fileRef.current;
     let formData = new FormData();
     formData.append('image', imageFile.files[0]);
     formData.append('title', title);
     formData.append('text', text);
-    axios
-      .post('http://localhost:8080/data/promoted/add', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then((response) => {
-        if (response.status === 201) {
-          setData(response.data.message);
-          setIsError(null);
-          setTimeout(() => {
-            setData(null);
-            setIsLoading(false);
-            setTitle('');
-            setText('');
-            fileRef.current.value = null;
-          }, 2000);
-        } else {
-          setIsLoading(false);
-          throw new Error('Unknown Error, update page and try again...');
-        }
-      })
-      .catch((err) => {
-        //If the error is not a abort error, update state
-        setIsLoading(false);
-        setIsError(err.message);
-      });
+
+    FetchPost('http://localhost:8080/data/promoted/add', formData);
   };
+  useEffect(() => {
+    handleRefresh();
+    setTitle('');
+    setText('');
+    fileRef.current.value = null;
+    if (data !== null) {
+      setIsShow(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   //Change Between add and upload window
   const [promotedWindow, setPromotedWindow] = useState(true);
@@ -100,6 +88,7 @@ const Promoted = () => {
           setRemoveLoading(false);
           setTimeout(() => {
             setRemoveMessage(null);
+            handleRefresh();
           }, 2000);
         } else {
           setRemoveLoading(false);
@@ -115,9 +104,19 @@ const Promoted = () => {
   //The onChange trigger the set.. function in the useState by using event.target.value and pass it
   return (
     <Container fluid className="createPromotedInputContainer">
+      {/* ---------------Toast message up--------------- */}
+      <Toast
+        show={isShow}
+        delay={3000}
+        autohide
+        onClose={() => setIsShow(false)}
+        className="toastMessage bg-dark text-white"
+      >
+        <Toast.Body>{data}</Toast.Body>
+      </Toast>
       {/* ----------------Admin promoted------------------- */}
-      <div id="adminPromoted" className="mt-4">
-        <h2 className="text-center mb-4 text-decoration-underline">Promoted</h2>
+      <div id="adminPromoted" className="mt-4 shadow">
+        <h2 className="text-center mb-4 adminUnderHeader">Promoted</h2>
         <div className="d-flex justify-content-center">
           <p className="editLinks mx-3 mb-0" onClick={() => editPromotedWindow(true)}>
             <strong>Lägg till</strong>
@@ -143,18 +142,17 @@ const Promoted = () => {
           </Form.Group>
           {/* --------------------Loading message and button---------- */}
           <div className="d-flex justify-content-center">
-            {!isLoading && !data && (
+            {!isLoading && !isError && (
               <Button type="submit" variant="outline-dark">
                 Lägg till
               </Button>
             )}
-            {isLoading && !data && (
+            {isLoading && !isError && (
               <Button variant="outline-dark" disabled>
                 <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
                 Loading...
               </Button>
             )}
-            {data && <p>{data}</p>}
             {isError && <div>{isError}</div>}
           </div>
         </Form>
