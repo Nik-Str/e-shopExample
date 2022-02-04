@@ -1,0 +1,23 @@
+.tableContainer {
+  max-width: 50%;
+}
+
+@media only screen and (max-width: 992px) {
+  .tableContainer {
+    max-width: 100%;
+  }
+}
+
+.promotedItems {
+  border-radius: 2rem;
+  border: 1px solid rgb(184, 184, 184);
+  padding: 2rem;
+  overflow-x: scroll;
+  max-height: 40rem;
+  overflow-y: scroll;
+}
+
+.promotedItems::-webkit-scrollbar,
+.tableContainer::-webkit-scrollbar {
+  display: none;
+}

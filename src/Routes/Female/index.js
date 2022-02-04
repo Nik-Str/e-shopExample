@@ -1,5 +1,5 @@
 //React
-import useFetch from '../../hooks/useFetchGET';
+import useGET from '../../hooks/useGET';
 import { useEffect } from 'react';
 //Components
 import ProductList from '../../components/ProductList';
@@ -18,7 +18,7 @@ const Home = () => {
   });
 
   //Destructs the 3 useState in useFetch hook. 'data: blogs' means we change its name to blogs
-  const { data: products, isLoading, isError } = useFetch('http://localhost:8080/');
+  const { data: products, isLoading, isError } = useGET('http://localhost:8080/');
 
   return (
     <div className="product-container">

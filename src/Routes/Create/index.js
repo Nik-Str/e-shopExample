@@ -1,19 +1,26 @@
 //React
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 //Custom hooks
-import useFetch from '../../hooks/useFetchGET';
+import useGET from '../../hooks/useGET';
 //Components
 import PromotedInput from '../../admin/promoted';
 import Promoted from '../../components/PromotedList';
 import Loading from '../../components/Loading';
+import Table from '../../components/Table';
+import VideoInput from '../../admin/movie/index';
+import VideoPreview from '../../components/videoPreview';
 //Bootstrap
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 //Css
 import './style.css';
+//Api endpoint for promoted items
+const URL_PROMOTED = 'http://localhost:8080/promoted';
+const URL_VIDEO = 'http://localhost:8080/video';
 
 const Create = () => {
   //Set product container top margin
+  const createRef = useRef(null);
   useEffect(() => {
     function getHeaderHight() {
       let headerHight = document.querySelector('header').offsetHeight;
@@ -23,18 +30,49 @@ const Create = () => {
     getHeaderHight();
   });
 
-  const createRef = useRef(null);
+  //Referens for switching between admin windows
+  const [promotedShow, setPromotedShow] = useState(true);
+  const [productShow, setProductShow] = useState(false);
+  const [videoShow, setVideoShow] = useState(false);
+
+  const handleSwitch = (e) => {
+    if (e === 'promoted') {
+      setPromotedShow(true);
+      setProductShow(false);
+      setVideoShow(false);
+    }
+
+    if (e === 'product') {
+      setPromotedShow(false);
+      setProductShow(true);
+      setVideoShow(false);
+    }
+
+    if (e === 'video') {
+      setPromotedShow(false);
+      setProductShow(false);
+      setVideoShow(true);
+    }
+  };
 
   //Get Promoted items
-  const { data: promoted, isLoading, isError, FetchGet } = useFetch();
-
+  const { data: promoted, isLoading, isError, FetchGet } = useGET();
   useEffect(() => {
-    FetchGet('http://localhost:8080/promoted');
+    FetchGet(URL_PROMOTED);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   const handleRefresh = () => {
-    FetchGet('http://localhost:8080/promoted');
+    FetchGet(URL_PROMOTED);
+  };
+
+  //Get Video items
+  const { data: video, isLoading: videoLoading, isError: videoError, FetchGet: videoFetch } = useGET();
+  useEffect(() => {
+    videoFetch(URL_VIDEO);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const handleRefreshVideo = () => {
+    videoFetch(URL_VIDEO);
   };
 
   return (
@@ -43,26 +81,45 @@ const Create = () => {
         <Container fluid className="adminSelectType">
           <h1 className="text-center">Administrera</h1>
           <div className="adminSelect">
-            <Button variant="dark">Promoted</Button>
-            <Button variant="dark">Produkter</Button>
-            <Button variant="dark">Video</Button>
+            <Button variant="dark" onClick={() => handleSwitch('promoted')}>
+              Promoted
+            </Button>
+            <Button variant="dark" onClick={() => handleSwitch('product')}>
+              Produkter
+            </Button>
+            <Button variant="dark" onClick={() => handleSwitch('video')}>
+              Video
+            </Button>
           </div>
         </Container>
         <hr />
         {/* -----------------Promoted handlers-------------------- */}
-        <div id="promotedDisplay">
-          <PromotedInput handleRefresh={handleRefresh} />
-          <hr className="mb-0" />
-          {/* Highlighted products preview */}
-          {isLoading && <Loading />}
-          {isError && <div>{isError}</div>}
-          {promoted && <Promoted products={promoted.data} />}
-        </div>
-
+        {promotedShow && (
+          <div>
+            <PromotedInput handleRefresh={handleRefresh} />
+            {promoted && <Table data={promoted.data} name={'Titel'} idDB={'Promoted id'} position={1} />}
+            <hr className="mb-0" />
+            {/* Promoted preview */}
+            {isLoading && <Loading />}
+            {isError && <div>{isError}</div>}
+            {promoted && <Promoted products={promoted.data} />}
+          </div>
+        )}
         {/* ------------------Products handlers------------------- */}
-        <div id="productsDisplay">
-          <h3>Form fields for products</h3>
-        </div>
+        {productShow && <div>Products</div>}
+
+        {/* ------------------Video handlers------------------- */}
+        {videoShow && (
+          <div>
+            <VideoInput handleRefreshVideo={handleRefreshVideo} />
+            {video && <Table data={video.data} name={'Size'} idDB={'Video id'} position={1} />}
+            <hr className="mb-0" />
+            {/* Video preview */}
+            {videoLoading && <Loading />}
+            {videoError && <div>{videoError}</div>}
+            {video && <VideoPreview video={video.data} />}
+          </div>
+        )}
       </div>
     </>
   );

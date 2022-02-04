@@ -5,14 +5,15 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
-//Dep
-import axios from 'axios';
-//custom hooks
-import useFetchPost from '../../hooks/useFetchPOST';
-//Components
 import Toast from 'react-bootstrap/Toast';
+//custom hooks
+import usePOST from '../../hooks/usePOST';
+import useDELETE from '../../hooks/useDELETE';
 //Css
-import './style.css';
+import '../style/admin.css';
+
+//Api endpoint for promoted items
+const URL_PROMOTED = 'http://localhost:8080/promoted';
 
 const Promoted = ({ handleRefresh }) => {
   //useState in this examples tracks the changes for the inputs.
@@ -23,36 +24,11 @@ const Promoted = ({ handleRefresh }) => {
 
   //Display och not display toast
   const [isShow, setIsShow] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   //Containers / refs for switching between add and delete forms
   const addRef = useRef(null);
   const deleteRef = useRef(null);
-
-  //States for add
-  const { data, isLoading, isError, FetchPost } = useFetchPost();
-
-  const handleAddSubmit = (e) => {
-    e.preventDefault();
-
-    //Upload
-    let imageFile = fileRef.current;
-    let formData = new FormData();
-    formData.append('image', imageFile.files[0]);
-    formData.append('title', title);
-    formData.append('text', text);
-
-    FetchPost('http://localhost:8080/data/promoted/add', formData);
-  };
-  useEffect(() => {
-    handleRefresh();
-    setTitle('');
-    setText('');
-    fileRef.current.value = null;
-    if (data !== null) {
-      setIsShow(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
 
   //Change Between add and upload window
   const [promotedWindow, setPromotedWindow] = useState(true);
@@ -69,41 +45,54 @@ const Promoted = ({ handleRefresh }) => {
     }
   }, [promotedWindow]);
 
+  //States for add
+  const { data, isLoading, isError, FetchPost } = usePOST();
+
+  const handleAddSubmit = (e) => {
+    e.preventDefault();
+
+    //Upload
+    let imageFile = fileRef.current;
+    let formData = new FormData();
+    formData.append('image', imageFile.files[0]);
+    formData.append('title', title);
+    formData.append('text', text);
+
+    FetchPost(URL_PROMOTED, formData);
+  };
+  useEffect(() => {
+    handleRefresh();
+    setTitle('');
+    setText('');
+    fileRef.current.value = null;
+    if (data !== null) {
+      setIsShow(true);
+      setToastMessage(data);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
   //States for delete
   const [remove, setRemove] = useState('');
-  const [removeLoading, setRemoveLoading] = useState(false);
-  const [removeError, setRemoveError] = useState(null);
-  const [removeMessage, setRemoveMessage] = useState(null);
+  const { dataDelete, isLoadingDelete, isErrorDelete, Fetchdelete } = useDELETE();
 
   const handleDelete = (e) => {
     e.preventDefault();
-    setRemoveLoading(true);
-    axios
-      .delete('http://localhost:8080/data/promoted/delete', { data: { remove: remove } })
-      .then((response) => {
-        if (response.status === 200) {
-          setRemoveMessage(response.data.message);
-          setRemove('');
-          setRemoveError(null);
-          setRemoveLoading(false);
-          setTimeout(() => {
-            setRemoveMessage(null);
-            handleRefresh();
-          }, 2000);
-        } else {
-          setRemoveLoading(false);
-          throw new Error('Unknown Error, update page and try again...');
-        }
-      })
-      .catch((err) => {
-        setRemoveLoading(false);
-        setRemoveError(err.message);
-      });
+    Fetchdelete(URL_PROMOTED, remove);
   };
+  useEffect(() => {
+    handleRefresh();
+    setRemove('');
+    if (dataDelete !== null) {
+      setToastMessage(dataDelete);
+      setIsShow(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataDelete]);
 
   //The onChange trigger the set.. function in the useState by using event.target.value and pass it
   return (
-    <Container fluid className="createPromotedInputContainer">
+    <Container fluid className="createInputContainer">
       {/* ---------------Toast message up--------------- */}
       <Toast
         show={isShow}
@@ -112,10 +101,11 @@ const Promoted = ({ handleRefresh }) => {
         onClose={() => setIsShow(false)}
         className="toastMessage bg-dark text-white"
       >
-        <Toast.Body>{data}</Toast.Body>
+        <Toast.Body>{toastMessage}</Toast.Body>
       </Toast>
+
       {/* ----------------Admin promoted------------------- */}
-      <div id="adminPromoted" className="mt-4 shadow">
+      <div className="mt-4 shadow adminMainDiv">
         <h2 className="text-center mb-4 adminUnderHeader">Promoted</h2>
         <div className="d-flex justify-content-center">
           <p className="editLinks mx-3 mb-0" onClick={() => editPromotedWindow(true)}>
@@ -160,24 +150,23 @@ const Promoted = ({ handleRefresh }) => {
         {/* ----------------------------Delete Form field -----------------------*/}
         <Form ref={deleteRef} onSubmit={handleDelete}>
           <Form.Group className="mb-3">
-            <Form.Label>Ange titel för borttagning</Form.Label>
+            <Form.Label>Ange id för borttagning</Form.Label>
             <Form.Control type="text" required value={remove} onChange={(e) => setRemove(e.target.value)} />
           </Form.Group>
 
           <div className="d-flex justify-content-center">
-            {!removeLoading && !removeMessage && !removeError && (
+            {!isLoadingDelete && !isErrorDelete && (
               <Button type="submit" variant="outline-dark">
                 Ta bort
               </Button>
             )}
-            {removeLoading && !remove && (
+            {isLoadingDelete && !isErrorDelete && (
               <Button variant="outline-dark">
                 <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
                 Loading...
               </Button>
             )}
-            {removeMessage && <p>{removeMessage}</p>}
-            {removeError && <div>{removeError}</div>}
+            {isErrorDelete && <div>{isErrorDelete}</div>}
           </div>
         </Form>
       </div>
