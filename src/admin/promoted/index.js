@@ -150,7 +150,7 @@ const Promoted = ({ handleRefresh }) => {
         {/* ----------------------------Delete Form field -----------------------*/}
         <Form ref={deleteRef} onSubmit={handleDelete}>
           <Form.Group className="mb-3">
-            <Form.Label>Ange id för borttagning</Form.Label>
+            <Form.Label>Ange filnamn för borttagning</Form.Label>
             <Form.Control type="text" required value={remove} onChange={(e) => setRemove(e.target.value)} />
           </Form.Group>
 

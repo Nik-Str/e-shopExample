@@ -15,33 +15,62 @@ import '../style/admin.css';
 //Api endpoint for promoted items
 const URL_VIDEO = 'http://localhost:8080/video';
 
-const Promoted = ({ handleRefreshVideo }) => {
+const Products = ({ handleRefreshProducts }) => {
   //Display och not display toast
   const [isShow, setIsShow] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
   //Change Between add and delete window
-  const [videoWindow, setVideoWindow] = useState(true);
+  const [productWindow, setProductWindow] = useState(true);
 
   //States and refs for add
-  const [screenSize, setScreenSize] = useState('Stor video');
-  const fileRef = useRef(null);
+  const [name, setName] = useState('');
+  const [brand, setBrand] = useState('');
+  const [price, setPrice] = useState('');
+  const [description, setDescription] = useState('');
+  const [sex, setSex] = useState('');
+  const [xsmall, setXsmall] = useState(false);
+  const [small, setSmall] = useState(false);
+  const [medium, setMedium] = useState(false);
+  const [large, setLarge] = useState(false);
+  const [xlarge, setXlarge] = useState(false);
+
+  const fileOneRef = useRef(null);
+  const fileTwoRef = useRef(null);
+  const fileThreeRef = useRef(null);
   const { data, isLoading, isError, FetchPost } = usePOST();
 
   const handlePost = (e) => {
     e.preventDefault();
-    //Upload
-    let videoFile = fileRef.current;
+    //Files
     let formData = new FormData();
-    formData.append('video', videoFile.files[0]);
-    formData.append('screenSize', screenSize);
-
+    formData.append('imageOne', fileOneRef.current.files[0]);
+    if (fileTwoRef) {
+      formData.append('imageTwo', fileTwoRef.current.files[0]);
+    }
+    if (fileThreeRef) {
+      formData.append('imageThree', fileThreeRef.current.files[0]);
+    }
+    //Text
+    formData.append('name', name);
+    formData.append('brand', brand);
+    formData.append('price', price);
+    formData.append('description', description);
+    formData.append('sex', sex);
+    //Sizes
+    formData.append('xsmall', xsmall);
+    formData.append('small', small);
+    formData.append('medium', medium);
+    formData.append('large', large);
+    formData.append('xlarge', xlarge);
     FetchPost(URL_VIDEO, formData);
   };
 
   useEffect(() => {
-    handleRefreshVideo();
-    fileRef.current.value = null;
+    handleRefreshProducts();
+    fileOneRef.current.value = null;
+    fileTwoRef.current.value = null;
+    fileThreeRef.current.value = null;
     if (data !== null) {
       setIsShow(true);
       setToastMessage(data);
@@ -58,7 +87,7 @@ const Promoted = ({ handleRefreshVideo }) => {
     Fetchdelete(URL_VIDEO, remove);
   };
   useEffect(() => {
-    handleRefreshVideo();
+    handleRefreshProducts();
     setRemove('');
     if (dataDelete !== null) {
       setToastMessage(dataDelete);
@@ -83,29 +112,75 @@ const Promoted = ({ handleRefreshVideo }) => {
 
       {/* ----------------Admin Video------------------- */}
       <div className="mt-4 shadow adminMainDiv">
-        <h2 className="text-center mb-4 adminUnderHeader">Video</h2>
+        <h2 className="text-center mb-4 adminUnderHeader">Produkter</h2>
         <div className="d-flex justify-content-center">
-          <p className="editLinks mx-3 mb-0" onClick={() => setVideoWindow(true)}>
+          <p className="editLinks mx-3 mb-0" onClick={() => setProductWindow(true)}>
             <strong>Lägg till</strong>
           </p>
-          <p className="editLinks mx-3 mb-0" onClick={() => setVideoWindow(false)}>
+          <p className="editLinks mx-3 mb-0" onClick={() => setProductWindow(false)}>
             <strong>Ta borts</strong>
           </p>
         </div>
 
         {/* -----------------------Add Form field------------------------ */}
-        {videoWindow && (
+        {productWindow && (
           <Form onSubmit={handlePost}>
             <Form.Group className="mb-3">
-              <Form.Label>Skärm typ</Form.Label>
-              <Form.Select required value={screenSize} onChange={(e) => setScreenSize(e.target.value)}>
-                <option>Stor video</option>
-                <option>Lite video</option>
+              <Form.Label>Titel</Form.Label>
+              <Form.Control type="text" required value={name} onChange={(e) => setName(e.target.value)} />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Märke</Form.Label>
+              <Form.Control type="text" required value={brand} onChange={(e) => setBrand(e.target.value)} />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Pris. (kr)</Form.Label>
+              <Form.Control type="number" required value={price} onChange={(e) => setPrice(e.target.value)} />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Beskrivning</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                required
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Typ</Form.Label>
+              <Form.Select required value={sex} onChange={(e) => setSex(e.target.value)}>
+                <option>Dam</option>
+                <option>Herr</option>
               </Form.Select>
             </Form.Group>
+
             <Form.Group className="mb-3">
-              <Form.Label>Video</Form.Label>
-              <Form.Control type="file" required ref={fileRef} />
+              <Form.Label className="d-flex">Storlekar</Form.Label>
+              <Form.Check inline label="Xsmall" onChange={setXsmall} />
+              <Form.Check inline label="Small" onChange={setSmall} />
+              <Form.Check inline label="Medium" onChange={setMedium} />
+              <Form.Check inline label="Large" onChange={setLarge} />
+              <Form.Check inline label="Xlarge" onChange={setXlarge} />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Bild 1</Form.Label>
+              <Form.Control type="file" required ref={fileOneRef} />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Bild 2</Form.Label>
+              <Form.Control type="file" ref={fileTwoRef} />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Bild 3</Form.Label>
+              <Form.Control type="file" ref={fileThreeRef} />
             </Form.Group>
             {/* --------------------Loading message and button---------- */}
             <div className="d-flex justify-content-center">
@@ -126,7 +201,7 @@ const Promoted = ({ handleRefreshVideo }) => {
         )}
 
         {/* ----------------------------Delete Form field -----------------------*/}
-        {!videoWindow && (
+        {!productWindow && (
           <Form onSubmit={handleDelete}>
             <Form.Group className="mb-3">
               <Form.Label>Ange filnamn för borttagning</Form.Label>
@@ -154,4 +229,4 @@ const Promoted = ({ handleRefreshVideo }) => {
   );
 };
 
-export default Promoted;
+export default Products;

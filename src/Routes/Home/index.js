@@ -13,9 +13,8 @@ import Loading from '../../components/Loading';
 import payments from '../../img/home-payment-icons.png';
 //Css
 import './style.css';
-//Api endpoint for promoted items
+//Api endpoint for promoted items and video
 const URL_PROMOTED = 'http://localhost:8080/promoted';
-
 const video_LG_URL = 'http://localhost:8080/video/large.mp4';
 const video_SM_URL = 'http://localhost:8080/video/small.mp4';
 

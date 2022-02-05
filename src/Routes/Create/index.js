@@ -9,6 +9,7 @@ import Loading from '../../components/Loading';
 import Table from '../../components/Table';
 import VideoInput from '../../admin/movie/index';
 import VideoPreview from '../../components/videoPreview';
+import ProductInput from '../../admin/products';
 //Bootstrap
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -17,6 +18,7 @@ import './style.css';
 //Api endpoint for promoted items
 const URL_PROMOTED = 'http://localhost:8080/promoted';
 const URL_VIDEO = 'http://localhost:8080/video';
+const URL_PRODUCTS = 'http://localhost:8080/products';
 
 const Create = () => {
   //Set product container top margin
@@ -75,6 +77,16 @@ const Create = () => {
     videoFetch(URL_VIDEO);
   };
 
+  //Get Products items
+  const { data: products, isLoading: productsLoading, isError: productsError, FetchGet: productsFetch } = useGET();
+  useEffect(() => {
+    productsFetch(URL_PRODUCTS);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const handleRefreshProducts = () => {
+    console.log('refresh');
+  };
+
   return (
     <>
       <div ref={createRef}>
@@ -97,7 +109,7 @@ const Create = () => {
         {promotedShow && (
           <div>
             <PromotedInput handleRefresh={handleRefresh} />
-            {promoted && <Table data={promoted.data} name={'Titel'} idDB={'Promoted id'} position={1} />}
+            {promoted && <Table data={promoted.data} name={'Titel'} file={'Filnamn'} position={1} />}
             <hr className="mb-0" />
             {/* Promoted preview */}
             {isLoading && <Loading />}
@@ -106,13 +118,21 @@ const Create = () => {
           </div>
         )}
         {/* ------------------Products handlers------------------- */}
-        {productShow && <div>Products</div>}
+        {productShow && (
+          <div>
+            <ProductInput handleRefreshProducts={handleRefreshProducts} />
+            {products && <Table data={products.data} name={'titel'} file={'Märke'} sex={'Typ'} position={1} />}
+            {productsLoading && <Loading />}
+            {productsError && <div>{isError}</div>}
+            {/* Här ska man se en överblick av de 3st senaste tillagda produkterna */}
+          </div>
+        )}
 
         {/* ------------------Video handlers------------------- */}
         {videoShow && (
           <div>
             <VideoInput handleRefreshVideo={handleRefreshVideo} />
-            {video && <Table data={video.data} name={'Size'} idDB={'Video id'} position={1} />}
+            {video && <Table data={video.data} name={'Skärm typ'} file={'Filnamn'} position={1} />}
             <hr className="mb-0" />
             {/* Video preview */}
             {videoLoading && <Loading />}
