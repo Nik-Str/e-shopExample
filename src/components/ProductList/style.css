@@ -1,0 +1,8 @@
+.productsPreview a {
+  text-decoration: none;
+  color: black;
+}
+
+.productsPreview p {
+  margin: 0rem;
+}

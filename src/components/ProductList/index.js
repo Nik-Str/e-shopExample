@@ -1,18 +1,28 @@
+//React
 import { Link } from 'react-router-dom';
+//Bootstrap
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+//Css
+import './style.css';
 
 const ProductList = ({ products }) => {
   return (
-    <div className="blog-list">
-      {products.map((item) => (
-        <div className="blog-preview" key={item._id}>
-          <Link to={`/product/${item._id}`}>
-            <h2>{item.title}</h2>
-            <p>{item.text}</p>
-          </Link>
-          <img src={`http://localhost:8080${item.image}`} alt="" />
-        </div>
-      ))}
-    </div>
+    <Container fluid>
+      <Row>
+        {products.map((item) => (
+          <div key={item._id} className="col-12 col-lg-3  p-3 bg-light productsPreview">
+            <Link to={`/product/${item._id}`}>
+              <img className="img-fluid" src={item.imageOne} alt="" />
+              <p>{item.name}</p>
+              <p>
+                <strong>{item.price} kr</strong>
+              </p>
+            </Link>
+          </div>
+        ))}
+      </Row>
+    </Container>
   );
 };
 

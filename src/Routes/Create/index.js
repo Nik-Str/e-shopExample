@@ -10,6 +10,7 @@ import Table from '../../components/Table';
 import VideoInput from '../../admin/movie/index';
 import VideoPreview from '../../components/videoPreview';
 import ProductInput from '../../admin/products';
+import ProductList from '../../components/ProductList';
 //Bootstrap
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -18,7 +19,7 @@ import './style.css';
 //Api endpoint for promoted items
 const URL_PROMOTED = 'http://localhost:8080/promoted';
 const URL_VIDEO = 'http://localhost:8080/video';
-const URL_PRODUCTS = 'http://localhost:8080/products';
+const URL_PRODUCTS = 'http://localhost:8080/product';
 
 const Create = () => {
   //Set product container top margin
@@ -84,7 +85,12 @@ const Create = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const handleRefreshProducts = () => {
-    console.log('refresh');
+    productsFetch(URL_PRODUCTS);
+  };
+
+  //filter on products
+  const filter = (a) => {
+    console.log(a);
   };
 
   return (
@@ -121,10 +127,22 @@ const Create = () => {
         {productShow && (
           <div>
             <ProductInput handleRefreshProducts={handleRefreshProducts} />
-            {products && <Table data={products.data} name={'titel'} file={'Märke'} sex={'Typ'} position={1} />}
+            {products && (
+              <Table
+                data={products.data}
+                name={'Titel'}
+                file={'Märke'}
+                kategori={'Kategori'}
+                sex={'Typ'}
+                position={1}
+                filter={filter}
+              />
+            )}
+            <hr className="mb-0" />
+            {/* Products preview */}
             {productsLoading && <Loading />}
             {productsError && <div>{isError}</div>}
-            {/* Här ska man se en överblick av de 3st senaste tillagda produkterna */}
+            {products && <ProductList products={products.data} />}
           </div>
         )}
 

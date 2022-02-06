@@ -13,7 +13,7 @@ import useDELETE from '../../hooks/useDELETE';
 import '../style/admin.css';
 
 //Api endpoint for promoted items
-const URL_VIDEO = 'http://localhost:8080/video';
+const URL_PRODUCT = 'http://localhost:8080/product';
 
 const Products = ({ handleRefreshProducts }) => {
   //Display och not display toast
@@ -24,11 +24,12 @@ const Products = ({ handleRefreshProducts }) => {
   const [productWindow, setProductWindow] = useState(true);
 
   //States and refs for add
+  const [category, setCategory] = useState('Byxor');
   const [name, setName] = useState('');
   const [brand, setBrand] = useState('');
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
-  const [sex, setSex] = useState('');
+  const [sex, setSex] = useState('Herr');
   const [xsmall, setXsmall] = useState(false);
   const [small, setSmall] = useState(false);
   const [medium, setMedium] = useState(false);
@@ -52,6 +53,7 @@ const Products = ({ handleRefreshProducts }) => {
       formData.append('imageThree', fileThreeRef.current.files[0]);
     }
     //Text
+    formData.append('category', category);
     formData.append('name', name);
     formData.append('brand', brand);
     formData.append('price', price);
@@ -63,11 +65,15 @@ const Products = ({ handleRefreshProducts }) => {
     formData.append('medium', medium);
     formData.append('large', large);
     formData.append('xlarge', xlarge);
-    FetchPost(URL_VIDEO, formData);
+    FetchPost(URL_PRODUCT, formData);
   };
 
   useEffect(() => {
     handleRefreshProducts();
+    setName('');
+    setBrand('');
+    setPrice('');
+    setDescription('');
     fileOneRef.current.value = null;
     fileTwoRef.current.value = null;
     fileThreeRef.current.value = null;
@@ -84,7 +90,7 @@ const Products = ({ handleRefreshProducts }) => {
 
   const handleDelete = (e) => {
     e.preventDefault();
-    Fetchdelete(URL_VIDEO, remove);
+    Fetchdelete(URL_PRODUCT, remove);
   };
   useEffect(() => {
     handleRefreshProducts();
@@ -126,6 +132,18 @@ const Products = ({ handleRefreshProducts }) => {
         {productWindow && (
           <Form onSubmit={handlePost}>
             <Form.Group className="mb-3">
+              <Form.Label>Kategori</Form.Label>
+              <Form.Select required value={category} onChange={(e) => setCategory(e.target.value)}>
+                <option>Byxor</option>
+                <option>Jackor</option>
+                <option>Långärmat</option>
+                <option>Shorts</option>
+                <option>T-shirts</option>
+                <option>Tights</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
               <Form.Label>Titel</Form.Label>
               <Form.Control type="text" required value={name} onChange={(e) => setName(e.target.value)} />
             </Form.Group>
@@ -152,7 +170,7 @@ const Products = ({ handleRefreshProducts }) => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Typ</Form.Label>
+              <Form.Label>För</Form.Label>
               <Form.Select required value={sex} onChange={(e) => setSex(e.target.value)}>
                 <option>Dam</option>
                 <option>Herr</option>
@@ -161,11 +179,11 @@ const Products = ({ handleRefreshProducts }) => {
 
             <Form.Group className="mb-3">
               <Form.Label className="d-flex">Storlekar</Form.Label>
-              <Form.Check inline label="Xsmall" onChange={setXsmall} />
-              <Form.Check inline label="Small" onChange={setSmall} />
-              <Form.Check inline label="Medium" onChange={setMedium} />
-              <Form.Check inline label="Large" onChange={setLarge} />
-              <Form.Check inline label="Xlarge" onChange={setXlarge} />
+              <Form.Check inline label="Xsmall" onChange={() => setXsmall(!xsmall)} />
+              <Form.Check inline label="Small" onChange={() => setSmall(!small)} />
+              <Form.Check inline label="Medium" onChange={() => setMedium(!medium)} />
+              <Form.Check inline label="Large" onChange={() => setLarge(!large)} />
+              <Form.Check inline label="Xlarge" onChange={() => setXlarge(!xlarge)} />
             </Form.Group>
 
             <Form.Group className="mb-3">
