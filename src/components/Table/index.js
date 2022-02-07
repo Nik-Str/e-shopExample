@@ -2,10 +2,23 @@
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 //css
 import './style.css';
 
-const Tables = ({ data, name, file, sex, position, kategori, filter }) => {
+const Tables = ({
+  data,
+  name,
+  file,
+  sex,
+  position,
+  kategori,
+  handleFilter,
+  filter,
+  update,
+  setModalShow,
+  handleModalFilter,
+}) => {
   const handleSubmit = (e) => {
     e.preventDefault();
   };
@@ -13,11 +26,11 @@ const Tables = ({ data, name, file, sex, position, kategori, filter }) => {
   return (
     <Container fluid className="tableContainer mt-3">
       <div className="promotedItems shadow">
-        {filter && (
-          // Vlue och onChange måste nog länka till state i create
+        {handleFilter && (
+          // Value och onChange måste nog länka till state i create
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3 text-center">
-              <Form.Control type="text" placeholder="Filter" />
+              <Form.Control type="text" placeholder="Filtrera på titel" value={filter} onChange={handleFilter} />
             </Form.Group>
           </Form>
         )}
@@ -29,6 +42,7 @@ const Tables = ({ data, name, file, sex, position, kategori, filter }) => {
               <th>{file}</th>
               {kategori && <th>{kategori}</th>}
               {sex && <th>{sex}</th>}
+              {update && <th>{update}</th>}
             </tr>
           </thead>
           <tbody>
@@ -41,6 +55,20 @@ const Tables = ({ data, name, file, sex, position, kategori, filter }) => {
                 {item.brand && <td>{item.brand}</td>}
                 {item.category && <td>{item.category}</td>}
                 {item.sex && <td>{item.sex}</td>}
+                {update && (
+                  <td>
+                    <Button
+                      variant="outline-secondary"
+                      size="sm"
+                      onClick={() => {
+                        setModalShow(true);
+                        handleModalFilter(item._id);
+                      }}
+                    >
+                      Edit
+                    </Button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

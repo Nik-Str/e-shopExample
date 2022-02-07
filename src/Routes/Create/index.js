@@ -11,6 +11,7 @@ import VideoInput from '../../admin/movie/index';
 import VideoPreview from '../../components/videoPreview';
 import ProductInput from '../../admin/products';
 import ProductList from '../../components/ProductList';
+import Modal from '../../components/Modal';
 //Bootstrap
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -80,6 +81,9 @@ const Create = () => {
 
   //Get Products items
   const { data: products, isLoading: productsLoading, isError: productsError, FetchGet: productsFetch } = useGET();
+  const [filter, setFilter] = useState('');
+  const [search, setSearch] = useState([]);
+
   useEffect(() => {
     productsFetch(URL_PRODUCTS);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -87,10 +91,29 @@ const Create = () => {
   const handleRefreshProducts = () => {
     productsFetch(URL_PRODUCTS);
   };
-
   //filter on products
-  const filter = (a) => {
-    console.log(a);
+  const handleFilter = (e) => {
+    setFilter(e.target.value);
+  };
+  useEffect(() => {
+    if (products !== null) {
+      setSearch(products.data);
+    }
+  }, [products]);
+
+  const searchFiltered = search.filter((item) => item.name.toLowerCase().includes(filter.toLowerCase()));
+  const searchFilteredPreview = searchFiltered.slice(-4);
+
+  //Modal and update
+  const [modalShow, setModalShow] = useState(false);
+
+  const [modalData, setModalData] = useState('');
+  const handleModalFilter = (itemId) => {
+    setModalData(products.data.filter((item) => item._id === itemId));
+  };
+
+  const handleDisplayModal = () => {
+    setModalShow(false);
   };
 
   return (
@@ -129,20 +152,24 @@ const Create = () => {
             <ProductInput handleRefreshProducts={handleRefreshProducts} />
             {products && (
               <Table
-                data={products.data}
+                data={searchFiltered}
                 name={'Titel'}
                 file={'Märke'}
                 kategori={'Kategori'}
                 sex={'Typ'}
                 position={1}
+                handleFilter={handleFilter}
                 filter={filter}
+                update={'Editera'}
+                setModalShow={(e) => setModalShow(e)}
+                handleModalFilter={(e) => handleModalFilter(e)}
               />
             )}
             <hr className="mb-0" />
             {/* Products preview */}
             {productsLoading && <Loading />}
             {productsError && <div>{isError}</div>}
-            {products && <ProductList products={products.data} />}
+            {products && <ProductList products={searchFilteredPreview} />}
           </div>
         )}
 
@@ -157,6 +184,15 @@ const Create = () => {
             {videoError && <div>{videoError}</div>}
             {video && <VideoPreview video={video.data} />}
           </div>
+        )}
+
+        {modalData && (
+          <Modal
+            data={modalData[0]}
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            handleDisplayModal={handleDisplayModal}
+          />
         )}
       </div>
     </>
