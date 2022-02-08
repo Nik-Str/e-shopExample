@@ -34,11 +34,11 @@ const Tables = ({
             </Form.Group>
           </Form>
         )}
-        <Table striped hover size="sm">
+        <Table striped hover size="sm tableDiv">
           <thead>
             <tr>
               <th>#</th>
-              <th>{name}</th>
+              {name && <th>{name}</th>}
               <th>{file}</th>
               {kategori && <th>{kategori}</th>}
               {sex && <th>{sex}</th>}
@@ -51,10 +51,11 @@ const Tables = ({
                 <th>{position++}</th>
                 {item.title && <td>{item.title}</td>}
                 {item.screen && <td>{item.screen}</td>}
-                <td>{item.name}</td>
+                {item.name && <td>{item.name}</td>}
                 {item.brand && <td>{item.brand}</td>}
                 {item.category && <td>{item.category}</td>}
                 {item.sex && <td>{item.sex}</td>}
+
                 {update && (
                   <td>
                     <Button

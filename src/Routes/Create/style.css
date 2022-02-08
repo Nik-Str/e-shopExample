@@ -1,6 +1,6 @@
 .adminSelect button {
   margin: 1%;
-  width: 31%;
+  width: 23%;
   transition: 0.5s;
 }
 
@@ -16,5 +16,11 @@
 @media only screen and (max-width: 992px) {
   .adminSelectType {
     max-width: 100%;
+  }
+
+  .adminSelect button {
+    margin: 1%;
+    width: 48%;
+    transition: 0.5s;
   }
 }

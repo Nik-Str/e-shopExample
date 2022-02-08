@@ -89,7 +89,7 @@ const Promoted = ({ handleRefreshVideo }) => {
             <strong>Lägg till</strong>
           </p>
           <p className="editLinks mx-3 mb-0" onClick={() => setVideoWindow(false)}>
-            <strong>Ta borts</strong>
+            <strong>Ta bort</strong>
           </p>
         </div>
 
@@ -100,7 +100,7 @@ const Promoted = ({ handleRefreshVideo }) => {
               <Form.Label>Skärm typ</Form.Label>
               <Form.Select required value={screenSize} onChange={(e) => setScreenSize(e.target.value)}>
                 <option>Stor video</option>
-                <option>Lite video</option>
+                <option>Liten video</option>
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3">

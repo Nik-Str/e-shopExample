@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-function useFetchPost() {
+function useFetchDelete() {
   const [dataDelete, setDataDelete] = useState(null);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
   const [isErrorDelete, setIsErrorDelete] = useState(null);
@@ -38,4 +38,4 @@ function useFetchPost() {
   return { dataDelete, isLoadingDelete, isErrorDelete, Fetchdelete };
 }
 
-export default useFetchPost;
+export default useFetchDelete;

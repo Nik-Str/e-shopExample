@@ -12,6 +12,8 @@ import VideoPreview from '../../components/videoPreview';
 import ProductInput from '../../admin/products';
 import ProductList from '../../components/ProductList';
 import Modal from '../../components/Modal';
+import SocialMedia from '../../admin/socialMedia';
+import Instagram from '../../components/Instagram';
 //Bootstrap
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -21,6 +23,7 @@ import './style.css';
 const URL_PROMOTED = 'http://localhost:8080/promoted';
 const URL_VIDEO = 'http://localhost:8080/video';
 const URL_PRODUCTS = 'http://localhost:8080/product';
+const URL_SOCIAL_MEDIA = 'http://localhost:8080/socialmedia';
 
 const Create = () => {
   //Set product container top margin
@@ -38,24 +41,35 @@ const Create = () => {
   const [promotedShow, setPromotedShow] = useState(true);
   const [productShow, setProductShow] = useState(false);
   const [videoShow, setVideoShow] = useState(false);
+  const [instaShow, setInstaShow] = useState(false);
 
   const handleSwitch = (e) => {
     if (e === 'promoted') {
       setPromotedShow(true);
       setProductShow(false);
       setVideoShow(false);
+      setInstaShow(false);
     }
 
     if (e === 'product') {
       setPromotedShow(false);
       setProductShow(true);
       setVideoShow(false);
+      setInstaShow(false);
     }
 
     if (e === 'video') {
       setPromotedShow(false);
       setProductShow(false);
       setVideoShow(true);
+      setInstaShow(false);
+    }
+
+    if (e === 'instagram') {
+      setInstaShow(true);
+      setPromotedShow(false);
+      setProductShow(false);
+      setVideoShow(false);
     }
   };
 
@@ -116,6 +130,16 @@ const Create = () => {
     setModalShow(false);
   };
 
+  //Get Social media items
+  const { data: insta, isLoading: instaIsLoading, isError: instaIsError, FetchGet: getInsta } = useGET();
+  useEffect(() => {
+    getInsta(URL_SOCIAL_MEDIA);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const handleRefreshSocialMedia = () => {
+    getInsta(URL_SOCIAL_MEDIA);
+  };
+
   return (
     <>
       <div ref={createRef}>
@@ -130,6 +154,9 @@ const Create = () => {
             </Button>
             <Button variant="dark" onClick={() => handleSwitch('video')}>
               Video
+            </Button>
+            <Button variant="dark" onClick={() => handleSwitch('instagram')}>
+              Instagram
             </Button>
           </div>
         </Container>
@@ -186,12 +213,27 @@ const Create = () => {
           </div>
         )}
 
+        {/* ----------------Instagram pictures handler-------------- */}
+        {instaShow && (
+          <div>
+            <SocialMedia handleRefreshSocialMedia={handleRefreshSocialMedia} />
+            {insta && <Table data={insta.data} file={'Filnamn'} position={1} />}
+            <hr className="mb-0" />
+            {/* Instagram preview */}
+            {instaIsLoading && <Loading />}
+            {instaIsError && <div>{instaIsError}</div>}
+            {insta && <Instagram data={insta.data} />}
+          </div>
+        )}
+
+        {/* -----------------Modal for Updates----------------- */}
         {modalData && (
           <Modal
             data={modalData[0]}
             show={modalShow}
             onHide={() => setModalShow(false)}
             handleDisplayModal={handleDisplayModal}
+            handleRefreshProducts={handleRefreshProducts}
           />
         )}
       </div>

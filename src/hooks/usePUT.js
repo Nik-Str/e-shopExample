@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-function useFetchPost() {
+function useFetchPut() {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(null);
 
-  const FetchPost = (url, data) => {
+  const FetchPut = (url, data) => {
     setIsLoading(true);
     //Add abortController. Is used to abort Fetch if user goes to other page during fetch process. Otherwise fetch still runs in background and cath error
     const abortCont = new AbortController();
@@ -18,7 +18,7 @@ function useFetchPost() {
         data,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': 'application/json',
           },
         },
         { signal: abortCont.signal }
@@ -28,6 +28,10 @@ function useFetchPost() {
           setData(response.data.message);
           setIsLoading(false);
           setIsError(null);
+          //Reset data value o null så that Toaster can trigger on new update
+          setTimeout(() => {
+            setData(null);
+          }, 3500);
         } else {
           throw new Error('Unknown Error, update page and try again!');
         }
@@ -44,7 +48,7 @@ function useFetchPost() {
     return () => abortCont.abort();
   };
 
-  return { data, isLoading, isError, FetchPost };
+  return { data, isLoading, isError, FetchPut };
 }
 
-export default useFetchPost;
+export default useFetchPut;

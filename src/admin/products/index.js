@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import Toast from 'react-bootstrap/Toast';
+import Accordion from 'react-bootstrap/Accordion';
 //custom hooks
 import usePOST from '../../hooks/usePOST';
 import useDELETE from '../../hooks/useDELETE';
@@ -124,82 +125,98 @@ const Products = ({ handleRefreshProducts }) => {
             <strong>Lägg till</strong>
           </p>
           <p className="editLinks mx-3 mb-0" onClick={() => setProductWindow(false)}>
-            <strong>Ta borts</strong>
+            <strong>Ta bort</strong>
           </p>
         </div>
 
         {/* -----------------------Add Form field------------------------ */}
         {productWindow && (
           <Form onSubmit={handlePost}>
-            <Form.Group className="mb-3">
-              <Form.Label>Kategori</Form.Label>
-              <Form.Select required value={category} onChange={(e) => setCategory(e.target.value)}>
-                <option>Byxor</option>
-                <option>Jackor</option>
-                <option>Långärmat</option>
-                <option>Shorts</option>
-                <option>T-shirts</option>
-                <option>Tights</option>
-              </Form.Select>
-            </Form.Group>
+            <Accordion defaultActiveKey={['0']} flush alwaysOpen className="mt-3">
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>Info:</Accordion.Header>
+                <Accordion.Body>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Titel</Form.Label>
+                    <Form.Control type="text" required value={name} onChange={(e) => setName(e.target.value)} />
+                  </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Titel</Form.Label>
-              <Form.Control type="text" required value={name} onChange={(e) => setName(e.target.value)} />
-            </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Märke</Form.Label>
+                    <Form.Control type="text" required value={brand} onChange={(e) => setBrand(e.target.value)} />
+                  </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Märke</Form.Label>
-              <Form.Control type="text" required value={brand} onChange={(e) => setBrand(e.target.value)} />
-            </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Pris. (kr)</Form.Label>
+                    <Form.Control type="number" required value={price} onChange={(e) => setPrice(e.target.value)} />
+                  </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Pris. (kr)</Form.Label>
-              <Form.Control type="number" required value={price} onChange={(e) => setPrice(e.target.value)} />
-            </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Beskrivning</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      required
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                    />
+                  </Form.Group>
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item eventKey="1">
+                <Accordion.Header>Storlekar & Typ:</Accordion.Header>
+                <Accordion.Body>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Kategori</Form.Label>
+                    <Form.Select required value={category} onChange={(e) => setCategory(e.target.value)}>
+                      <option>Byxor</option>
+                      <option>Jackor</option>
+                      <option>Långärmat</option>
+                      <option>Shorts</option>
+                      <option>T-shirts</option>
+                      <option>Tights</option>
+                    </Form.Select>
+                  </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Beskrivning</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                required
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label>För</Form.Label>
+                    <Form.Select required value={sex} onChange={(e) => setSex(e.target.value)}>
+                      <option>Dam</option>
+                      <option>Herr</option>
+                    </Form.Select>
+                  </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>För</Form.Label>
-              <Form.Select required value={sex} onChange={(e) => setSex(e.target.value)}>
-                <option>Dam</option>
-                <option>Herr</option>
-              </Form.Select>
-            </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="d-flex">Storlekar</Form.Label>
+                    <Form.Check inline label="Xsmall" onChange={() => setXsmall(!xsmall)} />
+                    <Form.Check inline label="Small" onChange={() => setSmall(!small)} />
+                    <Form.Check inline label="Medium" onChange={() => setMedium(!medium)} />
+                    <Form.Check inline label="Large" onChange={() => setLarge(!large)} />
+                    <Form.Check inline label="Xlarge" onChange={() => setXlarge(!xlarge)} />
+                  </Form.Group>
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item eventKey="2">
+                <Accordion.Header>Bilder:</Accordion.Header>
+                <Accordion.Body>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Bild 1</Form.Label>
+                    <Form.Control type="file" required ref={fileOneRef} />
+                  </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label className="d-flex">Storlekar</Form.Label>
-              <Form.Check inline label="Xsmall" onChange={() => setXsmall(!xsmall)} />
-              <Form.Check inline label="Small" onChange={() => setSmall(!small)} />
-              <Form.Check inline label="Medium" onChange={() => setMedium(!medium)} />
-              <Form.Check inline label="Large" onChange={() => setLarge(!large)} />
-              <Form.Check inline label="Xlarge" onChange={() => setXlarge(!xlarge)} />
-            </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Bild 2</Form.Label>
+                    <Form.Control type="file" ref={fileTwoRef} />
+                  </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Bild 1</Form.Label>
-              <Form.Control type="file" required ref={fileOneRef} />
-            </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Bild 3</Form.Label>
+                    <Form.Control type="file" ref={fileThreeRef} />
+                  </Form.Group>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Bild 2</Form.Label>
-              <Form.Control type="file" ref={fileTwoRef} />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Bild 3</Form.Label>
-              <Form.Control type="file" ref={fileThreeRef} />
-            </Form.Group>
             {/* --------------------Loading message and button---------- */}
             <div className="d-flex justify-content-center">
               {!isLoading && !isError && (

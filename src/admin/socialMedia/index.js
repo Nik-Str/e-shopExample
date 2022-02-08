@@ -12,13 +12,10 @@ import useDELETE from '../../hooks/useDELETE';
 //Css
 import '../style/admin.css';
 //Api endpoint for promoted items
-const URL_PROMOTED = 'http://localhost:8080/promoted';
+const URL_SOCIAL_MEDIA = 'http://localhost:8080/socialmedia';
 
-const Promoted = ({ handleRefresh }) => {
+const Promoted = ({ handleRefreshSocialMedia }) => {
   //useState in this examples tracks the changes for the inputs.
-  //This replaces document.querrySelector().value and makes it's easy to work the values from the input
-  const [title, setTitle] = useState('');
-  const [text, setText] = useState('');
   const fileRef = useRef(null);
 
   //Display och not display toast
@@ -54,15 +51,11 @@ const Promoted = ({ handleRefresh }) => {
     let imageFile = fileRef.current;
     let formData = new FormData();
     formData.append('image', imageFile.files[0]);
-    formData.append('title', title);
-    formData.append('text', text);
 
-    FetchPost(URL_PROMOTED, formData);
+    FetchPost(URL_SOCIAL_MEDIA, formData);
   };
   useEffect(() => {
-    handleRefresh();
-    setTitle('');
-    setText('');
+    handleRefreshSocialMedia();
     fileRef.current.value = null;
     if (data !== null) {
       setIsShow(true);
@@ -77,10 +70,10 @@ const Promoted = ({ handleRefresh }) => {
 
   const handleDelete = (e) => {
     e.preventDefault();
-    Fetchdelete(URL_PROMOTED, remove);
+    Fetchdelete(URL_SOCIAL_MEDIA, remove);
   };
   useEffect(() => {
-    handleRefresh();
+    handleRefreshSocialMedia();
     setRemove('');
     if (dataDelete !== null) {
       setToastMessage(dataDelete);
@@ -105,7 +98,7 @@ const Promoted = ({ handleRefresh }) => {
 
       {/* ----------------Admin promoted------------------- */}
       <div className="mt-4 shadow adminMainDiv">
-        <h2 className="text-center mb-4 adminUnderHeader">Promoted</h2>
+        <h2 className="text-center mb-4 adminUnderHeader">Instagram</h2>
         <div className="d-flex justify-content-center">
           <p className="editLinks mx-3 mb-0" onClick={() => editPromotedWindow(true)}>
             <strong>Lägg till</strong>
@@ -117,14 +110,6 @@ const Promoted = ({ handleRefresh }) => {
 
         {/* -----------------------Add Form field------------------------ */}
         <Form onSubmit={handleAddSubmit} ref={addRef}>
-          <Form.Group className="mb-3">
-            <Form.Label>Titel</Form.Label>
-            <Form.Control type="text" required value={title} onChange={(e) => setTitle(e.target.value)} />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Text</Form.Label>
-            <Form.Control as="textarea" rows={3} required value={text} onChange={(e) => setText(e.target.value)} />
-          </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Bild</Form.Label>
             <Form.Control type="file" required ref={fileRef} />

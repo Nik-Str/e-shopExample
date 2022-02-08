@@ -1,0 +1,21 @@
+.carousel {
+  z-index: 0;
+}
+
+.caroselDiv img {
+  max-height: 30rem;
+  border-radius: 8rem;
+}
+
+.caroselTextDiv h2 {
+  font-size: 1.6rem;
+}
+
+.caroselTextDiv p {
+  color: grey;
+}
+
+.carousel-control-next,
+.carousel-control-prev {
+  display: none;
+}
