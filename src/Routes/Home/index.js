@@ -11,8 +11,6 @@ import Promoted from '../../components/PromotedList';
 import Loading from '../../components/Loading';
 import Carosel from '../../components/Carosel';
 import Instagram from '../../components/Instagram';
-//Img
-import payments from '../../img/home-payment-icons.png';
 //Css
 import './style.css';
 //Api endpoint for promoted items and video
@@ -97,11 +95,6 @@ const Home = () => {
       {insta && <Instagram data={insta.data} />}
       {instaIsLoading && <Loading />}
       {instIsError && <div>{instIsError}</div>}
-
-      {/* -----------Img on payments options-------------- */}
-      <div className="home-img-div">
-        <img className="img-fluid" src={payments} alt="payment options" />
-      </div>
     </Container>
   );
 };

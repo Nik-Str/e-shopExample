@@ -43,3 +43,20 @@ h4 {
 .service-links a:hover {
   color: black;
 }
+
+@media only screen and (min-width: 992px) {
+  .payments-img-div {
+    margin: auto;
+    max-width: 40%;
+  }
+}
+
+.payments-img-div {
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(100%);
+}
+
+.ceoQuote {
+  font-size: 0.9rem;
+  text-decoration: underline;
+}

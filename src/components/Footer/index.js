@@ -13,12 +13,14 @@ import Linkedin from '@material-ui/icons/LinkedIn';
 import Youtube from '@material-ui/icons/YouTube';
 //Css
 import './style.css';
+//Img
+import payments from '../../img/home-payment-icons.png';
 
 const footer = () => {
   return (
     <>
       <footer>
-        <Container fluid>
+        <Container fluid className="bg-light">
           {/* -------------Nyhetsbrev------------- */}
           <Row className="d-flex justify-content-center text-center footer-form-row">
             <h3 className="mt-4 text-white">Prenumerera på vårt Nyhetsbrev</h3>
@@ -31,7 +33,7 @@ const footer = () => {
           </Row>
           {/* -------------Main Footer------------- */}
           <Row>
-            <div className="col-12 col-md-4 text-center mt-4 mb-3 service-links">
+            <div className="col-12 col-md-4 text-center mt-4 mb-1 service-links">
               <h4>Information</h4>
               <div>
                 <Link to="/">Om oss</Link>
@@ -43,7 +45,7 @@ const footer = () => {
                 <Link to="/">Press</Link>
               </div>
             </div>
-            <div className="col-12 col-md-4 text-center mt-4 mb-3 service-links">
+            <div className="col-12 col-md-4 text-center mt-4 mb-1 service-links">
               <h4>Kundtjänst</h4>
               <div>
                 <Link to="/">Kontakta oss</Link>
@@ -55,22 +57,28 @@ const footer = () => {
                 <Link to="/">Cookiepolicy</Link>
               </div>
             </div>
-            <div className="col-12 col-md-4 text-center mt-4 mb-3">
+            <div className="col-12 col-md-4 text-center mt-4 mb-1">
               <h4>Följ oss</h4>
               <div>
                 <a href="/">
-                  <Instagram className="soc-icons" />
+                  <Instagram className="soc-icons instagram" />
                 </a>
                 <a href="/">
-                  <Facebook className="soc-icons" />
+                  <Facebook className="soc-icons facebook" />
                 </a>
                 <a href="/">
-                  <Linkedin className="soc-icons" />
+                  <Linkedin className="soc-icons linkedin" />
                 </a>
                 <a href="/">
-                  <Youtube className="soc-icons" />
+                  <Youtube className="soc-icons youtube" />
                 </a>
               </div>
+            </div>
+          </Row>
+          <Row>
+            {/* -----------Img on payments options-------------- */}
+            <div className="payments-img-div">
+              <img className="img-fluid" src={payments} alt="payment options" />
             </div>
           </Row>
           <Row className="footer-end-row">

@@ -11,9 +11,9 @@ import './style.css';
 const Carosel = ({ data }) => {
   return (
     <Container fluid className="bg-dark">
-      <Row>
+      <Row className="caroselRow">
         {/* Female Clothes */}
-        <div className="col-12 col-lg-6 caroselDiv my-lg-5 mt-5 mb-5 p-3 p-lg-0">
+        <div className="col-12 col-lg-4 caroselDiv my-lg-5 mb-5 p-3 p-lg-1">
           <Carousel fade>
             {data[0].map((item) => (
               <Carousel.Item key={item._id} className="d-flex justify-content-center">
@@ -36,7 +36,7 @@ const Carosel = ({ data }) => {
           </div>
         </div>
         {/* Male Clothes */}
-        <div className="col-12 col-lg-6 caroselDiv my-lg-5 mb-5 p-3 p-lg-0">
+        <div className="col-12 col-lg-4 caroselDiv my-lg-5 mb-3 p-3 p-lg-1">
           <Carousel fade>
             {data[1].map((item) => (
               <Carousel.Item key={item._id} className="d-flex justify-content-center">
@@ -57,6 +57,25 @@ const Carosel = ({ data }) => {
               </Button>{' '}
             </Link>
           </div>
+        </div>
+        {/* --------------- Text------------------ */}
+        <div className="col-12 col-lg-4 my-lg-auto mt-3 mb-2 p-3 p-lg-1 text-white text-center">
+          <h3>Nordisk kvalitet</h3>
+          <p>
+            <i>
+              "E-Shop är stolt återförsäljare av de ledande märkerna <br className="d-none d-lg-block" />
+              inom fitness och hälsa. Vi tror på kvalitet före <br className="d-none d-lg-block" />
+              kvantitet och handplockar utvalda produkter <br className="d-none d-lg-block" />
+              med garanterad lång hållbarhet."
+            </i>
+            <br />
+            <strong className="ceoQuote">Ida J. CEO</strong>
+          </p>
+          <a href="/" className="text-decoration-none text-secondary">
+            <h5>
+              <strong>#E-SHOP</strong>
+            </h5>
+          </a>
         </div>
       </Row>
     </Container>

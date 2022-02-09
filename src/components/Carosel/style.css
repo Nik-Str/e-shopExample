@@ -19,3 +19,10 @@
 .carousel-control-prev {
   display: none;
 }
+
+@media only screen and (max-width: 992px) {
+  .caroselRow {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}
