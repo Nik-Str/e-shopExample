@@ -118,7 +118,7 @@ const Products = ({ handleRefreshProducts }) => {
       </Toast>
 
       {/* ----------------Admin Video------------------- */}
-      <div className="mt-4 shadow adminMainDiv">
+      <div className="shadow adminMainDiv">
         <h2 className="text-center mb-4 adminUnderHeader">Produkter</h2>
         <div className="d-flex justify-content-center">
           <p className="editLinks mx-3 mb-0" onClick={() => setProductWindow(true)}>
@@ -132,7 +132,7 @@ const Products = ({ handleRefreshProducts }) => {
         {/* -----------------------Add Form field------------------------ */}
         {productWindow && (
           <Form onSubmit={handlePost}>
-            <Accordion defaultActiveKey={['0']} flush alwaysOpen className="mt-3">
+            <Accordion defaultActiveKey={['0']} flush alwaysOpen className="my-3">
               <Accordion.Item eventKey="0">
                 <Accordion.Header>Info:</Accordion.Header>
                 <Accordion.Body>

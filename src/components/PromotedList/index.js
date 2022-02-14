@@ -6,10 +6,10 @@ import './style.css';
 
 const Promoted = ({ products }) => {
   return (
-    <Container fluid>
-      <Row>
+    <Container fluid className="bg-light">
+      <Row className="d-flex justify-content-center">
         {products.map((item) => (
-          <div key={item._id} className="col-12 col-lg-4 text-center p-3 bg-light">
+          <div key={item._id} className="col-12 col-lg-3 text-center p-3">
             <img className="img-fluid promoted-img mt-3 mb-3" src={item.url} alt="Promoted service" />
             <h2>{item.title}</h2>
             <p>

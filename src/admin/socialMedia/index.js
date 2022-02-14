@@ -97,7 +97,7 @@ const Promoted = ({ handleRefreshSocialMedia }) => {
       </Toast>
 
       {/* ----------------Admin promoted------------------- */}
-      <div className="mt-4 shadow adminMainDiv">
+      <div className="shadow adminMainDiv">
         <h2 className="text-center mb-4 adminUnderHeader">Instagram</h2>
         <div className="d-flex justify-content-center">
           <p className="editLinks mx-3 mb-0" onClick={() => editPromotedWindow(true)}>

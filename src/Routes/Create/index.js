@@ -1,5 +1,6 @@
 //React
 import { useEffect, useRef, useState } from 'react';
+import * as React from 'react';
 //Custom hooks
 import useGET from '../../hooks/useGET';
 //Components
@@ -19,7 +20,8 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 //Css
 import './style.css';
-//Api endpoint for promoted items
+
+//Api endpoints
 const URL_PROMOTED = 'http://localhost:8080/promoted';
 const URL_VIDEO = 'http://localhost:8080/video';
 const URL_PRODUCTS = 'http://localhost:8080/product';
@@ -105,10 +107,12 @@ const Create = () => {
   const handleRefreshProducts = () => {
     productsFetch(URL_PRODUCTS);
   };
+
   //filter on products
   const handleFilter = (e) => {
     setFilter(e.target.value);
   };
+
   useEffect(() => {
     if (products !== null) {
       setSearch(products.data);
@@ -122,6 +126,7 @@ const Create = () => {
   const [modalShow, setModalShow] = useState(false);
 
   const [modalData, setModalData] = useState('');
+
   const handleModalFilter = (itemId) => {
     setModalData(products.data.filter((item) => item._id === itemId));
   };
@@ -144,7 +149,6 @@ const Create = () => {
     <>
       <div ref={createRef}>
         <Container fluid className="adminSelectType">
-          <h1 className="text-center">Administrera</h1>
           <div className="adminSelect">
             <Button variant="dark" onClick={() => handleSwitch('promoted')}>
               Promoted
@@ -160,72 +164,73 @@ const Create = () => {
             </Button>
           </div>
         </Container>
-        <hr />
-        {/* -----------------Promoted handlers-------------------- */}
-        {promotedShow && (
-          <div>
-            <PromotedInput handleRefresh={handleRefresh} />
-            {promoted && <Table data={promoted.data} name={'Titel'} file={'Filnamn'} position={1} />}
-            <hr className="mb-0" />
-            {/* Promoted preview */}
-            {isLoading && <Loading />}
-            {isError && <div>{isError}</div>}
-            {promoted && <Promoted products={promoted.data} />}
-          </div>
-        )}
-        {/* ------------------Products handlers------------------- */}
-        {productShow && (
-          <div>
-            <ProductInput handleRefreshProducts={handleRefreshProducts} />
-            {products && (
-              <Table
-                data={searchFiltered}
-                name={'Titel'}
-                file={'Märke'}
-                kategori={'Kategori'}
-                sex={'Typ'}
-                position={1}
-                handleFilter={handleFilter}
-                filter={filter}
-                update={'Editera'}
-                setModalShow={(e) => setModalShow(e)}
-                handleModalFilter={(e) => handleModalFilter(e)}
-              />
-            )}
-            <hr className="mb-0" />
-            {/* Products preview */}
-            {productsLoading && <Loading />}
-            {productsError && <div>{isError}</div>}
-            {products && <ProductList products={searchFilteredPreview} />}
-          </div>
-        )}
+        <hr className="mb-0" />
+        <div className="div-create">
+          {/* -----------------Promoted handlers-------------------- */}
+          {promotedShow && (
+            <div>
+              <PromotedInput handleRefresh={handleRefresh} />
+              {promoted && <Table data={promoted.data} name={'Titel'} file={'Filnamn'} position={1} />}
+              <hr className="mb-0" />
+              {/* Promoted preview */}
+              {isLoading && <Loading />}
+              {isError && <div>{isError}</div>}
+              {promoted && <Promoted products={promoted.data} />}
+            </div>
+          )}
+          {/* ------------------Products handlers------------------- */}
+          {productShow && (
+            <div>
+              <ProductInput handleRefreshProducts={handleRefreshProducts} />
+              {products && (
+                <Table
+                  data={searchFiltered}
+                  name={'Titel'}
+                  file={'Märke'}
+                  kategori={'Kategori'}
+                  sex={'Typ'}
+                  position={1}
+                  handleFilter={handleFilter}
+                  filter={filter}
+                  update={'Editera'}
+                  setModalShow={(e) => setModalShow(e)}
+                  handleModalFilter={(e) => handleModalFilter(e)}
+                />
+              )}
+              <hr className="mb-0" />
+              {/* Products preview */}
+              {productsLoading && <Loading />}
+              {productsError && <div>{isError}</div>}
+              {products && <ProductList products={searchFilteredPreview} />}
+            </div>
+          )}
 
-        {/* ------------------Video handlers------------------- */}
-        {videoShow && (
-          <div>
-            <VideoInput handleRefreshVideo={handleRefreshVideo} />
-            {video && <Table data={video.data} name={'Skärm typ'} file={'Filnamn'} position={1} />}
-            <hr className="mb-0" />
-            {/* Video preview */}
-            {videoLoading && <Loading />}
-            {videoError && <div>{videoError}</div>}
-            {video && <VideoPreview video={video.data} />}
-          </div>
-        )}
+          {/* ------------------Video handlers------------------- */}
+          {videoShow && (
+            <div>
+              <VideoInput handleRefreshVideo={handleRefreshVideo} />
+              {video && <Table data={video.data} name={'Skärm typ'} file={'Filnamn'} position={1} />}
+              <hr className="mb-0" />
+              {/* Video preview */}
+              {videoLoading && <Loading />}
+              {videoError && <div>{videoError}</div>}
+              {video && <VideoPreview video={video.data} />}
+            </div>
+          )}
 
-        {/* ----------------Instagram pictures handler-------------- */}
-        {instaShow && (
-          <div>
-            <SocialMedia handleRefreshSocialMedia={handleRefreshSocialMedia} />
-            {insta && <Table data={insta.data} file={'Filnamn'} position={1} />}
-            <hr className="mb-0" />
-            {/* Instagram preview */}
-            {instaIsLoading && <Loading />}
-            {instaIsError && <div>{instaIsError}</div>}
-            {insta && <Instagram data={insta.data} />}
-          </div>
-        )}
-
+          {/* ----------------Instagram pictures handler-------------- */}
+          {instaShow && (
+            <div>
+              <SocialMedia handleRefreshSocialMedia={handleRefreshSocialMedia} />
+              {insta && <Table data={insta.data} file={'Filnamn'} position={1} />}
+              <hr className="mb-0" />
+              {/* Instagram preview */}
+              {instaIsLoading && <Loading />}
+              {instaIsError && <div>{instaIsError}</div>}
+              {insta && <Instagram data={insta.data} />}
+            </div>
+          )}
+        </div>
         {/* -----------------Modal for Updates----------------- */}
         {modalData && (
           <Modal

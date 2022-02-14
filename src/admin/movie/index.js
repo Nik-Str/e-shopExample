@@ -82,7 +82,7 @@ const Promoted = ({ handleRefreshVideo }) => {
       </Toast>
 
       {/* ----------------Admin Video------------------- */}
-      <div className="mt-4 shadow adminMainDiv">
+      <div className="shadow adminMainDiv bg-light bg-opacity-75 border">
         <h2 className="text-center mb-4 adminUnderHeader">Video</h2>
         <div className="d-flex justify-content-center">
           <p className="editLinks mx-3 mb-0" onClick={() => setVideoWindow(true)}>
@@ -121,6 +121,14 @@ const Promoted = ({ handleRefreshVideo }) => {
                 </Button>
               )}
               {isError && <div>{isError}</div>}
+            </div>
+            <div style={{ 'font-size': '0.8rem' }}>
+              <p className="m-0">
+                <strong>Stor Video: </strong>rek* 1920x1080
+              </p>
+              <p className="m-0">
+                <strong>Liten Video: </strong>rek* 1080x1920
+              </p>
             </div>
           </Form>
         )}

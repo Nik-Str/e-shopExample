@@ -11,7 +11,7 @@ const ProductList = ({ products }) => {
     <Container fluid>
       <Row>
         {products.map((item) => (
-          <div key={item._id} className="col-12 col-lg-3  p-3 bg-light productsPreview">
+          <div key={item._id} className="col-6 col-lg-3 p-3 productsPreview">
             <Link to={`/product/${item._id}`}>
               <img className="img-fluid" src={item.imageOne} alt="" />
               <p>{item.name}</p>

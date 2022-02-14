@@ -8,7 +8,7 @@
   }
 }
 
-.promotedItems {
+.tableItems {
   border-radius: 2rem;
   border: 1px solid rgb(184, 184, 184);
   padding: 2rem;
@@ -17,7 +17,7 @@
   overflow-y: scroll;
 }
 
-.promotedItems::-webkit-scrollbar,
+.tableItems::-webkit-scrollbar,
 .tableContainer::-webkit-scrollbar {
   display: none;
 }
