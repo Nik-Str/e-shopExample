@@ -1,4 +1,16 @@
 const useReducer = (state, action) => {
+  //The initial data sent to useReducer Hoook
+  let data = action.data;
+
+  //Filtrera på Kategori
+  const filterByCategory = (event, currentData) => {
+    return currentData.filter((item) => item.category.toLowerCase() === event.toLowerCase());
+  };
+  if (action.filter !== '') {
+    data = filterByCategory(action.filter, data);
+  }
+
+  //Filtrera på storlek
   const filterBySize = (event, currentData) => {
     switch (event) {
       case 'X-Small':
@@ -15,26 +27,14 @@ const useReducer = (state, action) => {
         throw new Error();
     }
   };
+  if (action.size !== '') {
+    data = filterBySize(action.size, data);
+  }
 
-  const filterByCategory = (event, currentData) => {
-    return currentData.filter((item) => item.category.toLowerCase() === event.toLowerCase());
-  };
-
-  //The initial data sent to useReducer Hoook
-  let data = action.data;
-
+  //Sortering
   switch (action.sort) {
-    //--------------------------------------------------------------
     case 'Nyaste':
-      //Filtrerar på kategori
-      if (action.filter !== '') {
-        data = filterByCategory(action.filter, data);
-      }
-      //Filtrera på storlek
-      if (action.size !== '') {
-        data = filterBySize(action.size, data);
-      }
-      //Filter by date
+      //Sort by date
       data = data.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
       //Return value
       return {
@@ -43,14 +43,7 @@ const useReducer = (state, action) => {
       };
     //--------------------------------------------------------------
     case 'Namn A-Ö':
-      if (action.filter !== '') {
-        data = filterByCategory(action.filter, data);
-      }
-      //Filtrera på storlek
-      if (action.size !== '') {
-        data = filterBySize(action.size, data);
-      }
-      //Filter by pris lägst först
+      //Sort by Name Ascending
       data = data.sort((a, b) => (a.name > b.name ? 1 : -1));
       //Return value
       return {
@@ -59,14 +52,7 @@ const useReducer = (state, action) => {
       };
     //--------------------------------------------------------------
     case 'Namn Ö-A':
-      if (action.filter !== '') {
-        data = filterByCategory(action.filter, data);
-      }
-      //Filtrera på storlek
-      if (action.size !== '') {
-        data = filterBySize(action.size, data);
-      }
-      //Filter by pris lägst först
+      //Sort by Name Descending
       data = data.sort((a, b) => (a.name < b.name ? 1 : -1));
       //Return value
       return {
@@ -75,15 +61,7 @@ const useReducer = (state, action) => {
       };
     //--------------------------------------------------------------
     case 'Lägst pris':
-      //Filtrerar på kategori
-      if (action.filter !== '') {
-        data = filterByCategory(action.filter, data);
-      }
-      //Filtrera på storlek
-      if (action.size !== '') {
-        data = filterBySize(action.size, data);
-      }
-      //Filter by pris lägst först
+      //Sort by pris Ascending
       data = data.sort((a, b) => a.price - b.price);
       //Return value
       return {
@@ -92,15 +70,7 @@ const useReducer = (state, action) => {
       };
     //--------------------------------------------------------------
     case 'Högst pris':
-      //Filtrerar på kategori
-      if (action.filter !== '') {
-        data = filterByCategory(action.filter, data);
-      }
-      //Filtrera på storlek
-      if (action.size !== '') {
-        data = filterBySize(action.size, data);
-      }
-      //Filter by pris lägst först
+      //Sort by pris Descending
       data = data.sort((a, b) => b.price - a.price);
       //Return value
       return {

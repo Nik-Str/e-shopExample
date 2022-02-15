@@ -9,7 +9,7 @@ import App from './App';
 //Routes
 import Home from './Routes/Home';
 import Create from './Routes/Create';
-import FemaleClothes from './Routes/Female';
+import DressRoom from './Routes/DressRoom';
 import ProductDetails from './Routes/ProductDetails';
 import NotFound from './Routes/NotFound';
 
@@ -22,7 +22,8 @@ ReactDOM.render(
         <Route path="/" element={<App />}>
           {/* Children to app */}
           <Route path="/" element={<Home />} />
-          <Route path="female" element={<FemaleClothes />} />
+          <Route path="female" element={<DressRoom />} />
+          <Route path="male" element={<DressRoom />} />
           <Route path="create" element={<Create />} />
           <Route path="product/:id" element={<ProductDetails />} />
           {/* The "*" has special meaning here. It will match only when no other routes do. */}

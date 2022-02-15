@@ -1,5 +1,5 @@
 //React
-import { useEffect, useRef, useState, useReducer } from 'react';
+import { useEffect, useRef, useState, useReducer, useContext } from 'react';
 //Custom hooks
 import useGET from '../../hooks/useGET';
 //Components
@@ -16,28 +16,41 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import FilterIcon from '@material-ui/icons/BallotOutlined';
 //css
 import './style.css';
+//Import UserContext from App.js
+import { NavHeightContext } from '../../App';
 //Api endpoints
 const URL_PRODUCTS_FEMALE = 'http://localhost:8080/female';
+const URL_PRODUCTS_MALE = 'http://localhost:8080/male';
 
 const Home = () => {
   //Set product container top margin
   const conterinerRef = useRef(null);
+
+  const { navHeight } = useContext(NavHeightContext);
   useEffect(() => {
-    function getHeaderHight() {
-      let headerHight = document.querySelector('header').offsetHeight;
-      conterinerRef.current.style.marginTop = `${headerHight + 30}px`;
+    if (navHeight !== 0) {
+      conterinerRef.current.style.marginTop = `${navHeight + 30}px`;
     }
-    window.onresize = getHeaderHight;
-    getHeaderHight();
-  });
+  }, [navHeight]);
+
+  //States for navbar selection male or female
+  const url = window.location.pathname;
+  const [sex, setSex] = useState(null);
 
   //Get female clothes
   const { data: product, isLoading, isError, FetchGet } = useGET();
   //Get products on render
   useEffect(() => {
-    FetchGet(URL_PRODUCTS_FEMALE);
+    if (url === '/female') {
+      FetchGet(URL_PRODUCTS_FEMALE);
+      setSex('Dam');
+    }
+    if (url === '/male') {
+      FetchGet(URL_PRODUCTS_MALE);
+      setSex('Herr');
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [url]);
 
   //Offcanvas
   const [show, setShow] = useState(false);
@@ -57,6 +70,7 @@ const Home = () => {
     getScreenSize();
   });
 
+  //Filtreringsfunktion
   const [sort, setSort] = useState('Nyaste');
   const [filter, setFilter] = useState('');
   const [size, setSize] = useState('');
@@ -73,11 +87,6 @@ const Home = () => {
       setproductFiltered({ sort: sort, filter: filter, size: size, data: product.data });
     }
   }, [sort, filter, size, product]);
-
-  //Denna kan jag ta bort när jag har utvecklat hela funktionen klart
-  useEffect(() => {
-    console.log(productsFiltered);
-  }, [productsFiltered]);
 
   return (
     <div ref={conterinerRef}>
@@ -99,6 +108,7 @@ const Home = () => {
                 setFilter={setFilter}
                 size={size}
                 setSize={setSize}
+                sex={sex}
               />
             )}
           </div>
@@ -117,6 +127,7 @@ const Home = () => {
                   setFilter={setFilter}
                   size={size}
                   setSize={setSize}
+                  sex={sex}
                 />
               )}
             </Offcanvas.Body>

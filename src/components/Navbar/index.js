@@ -1,4 +1,5 @@
 //React
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 //Bootstrap
 import Navbar from 'react-bootstrap/Navbar';
@@ -16,10 +17,22 @@ import Cart from '@material-ui/icons/ShoppingCart';
 //Css
 import './style.css';
 
-const navbar = () => {
+const NavbarHead = ({ setNavHeight }) => {
+  const [expanded, setExpanded] = useState(false);
+
+  //Get the height of the header
+  const ref = useRef(null);
+  useEffect(() => {
+    setNavHeight(ref.current.clientHeight);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  //Set Logo typ
+  const width = window.innerWidth;
+
   return (
     <>
-      <header>
+      <header ref={ref}>
         {/* -------------------Over Nav content-------------------- */}
         <Container fluid className="navbar-container">
           <Row className="d-flex align-items-center">
@@ -59,27 +72,30 @@ const navbar = () => {
         </Container>
 
         {/* ---------------Navbar---------------------- */}
-        <Navbar className="bg-white shadow" expand="lg">
+        <Navbar className="bg-white shadow" expand="lg" expanded={expanded}>
           <Container>
             <Navbar.Brand>
-              <Link to="/">
-                <img alt="Logo" src={Logo} className="d-inline-block align-top img-fluid logo" />
+              <Link to="/" onClick={() => setExpanded(false)}>
+                <img alt="Logo" src={Logo} className="d-inline-block align-top img-fluid mx-sm-5" />
               </Link>
             </Navbar.Brand>
 
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Toggle
+              aria-controls="basic-navbar-nav"
+              onClick={() => setExpanded(expanded ? false : 'expanded')}
+            />
             <Navbar.Collapse id="basic-navbar-nav">
               <Form className="d-flex formField mt-3 mt-lg-0">
                 <Form.Control type="search" placeholder="Search" className="me-2" />
               </Form>
               <Nav className="ms-auto">
-                <Link className="nav-link" to="/female">
+                <Link className="nav-link" to="/female" onClick={() => setExpanded(false)}>
                   <strong>Dam</strong>
                 </Link>
-                <Link className="nav-link" to="/create">
+                <Link className="nav-link" to="/male" onClick={() => setExpanded(false)}>
                   <strong>Herr</strong>
                 </Link>
-                <Link className="nav-link" to="/">
+                <Link className="nav-link" to="/create" onClick={() => setExpanded(false)}>
                   <Cart className="nav-chart-icon" />
                 </Link>
               </Nav>
@@ -98,4 +114,4 @@ const navbar = () => {
 //<Link to="/">Home</Link>
 //<Link to="/create">New Blog</Link>
 
-export default navbar;
+export default NavbarHead;

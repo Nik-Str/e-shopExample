@@ -25,6 +25,9 @@ const Home = () => {
   const welcomeRef = useRef(null);
   const videBgRef = useRef(null);
   const videoSmRef = useRef(null);
+
+  const [lgPlay, setLgPlay] = useState(false);
+  const [smPlay, setSmPlay] = useState(false);
   useEffect(() => {
     function getVideoHight() {
       let videoHight;
@@ -37,7 +40,7 @@ const Home = () => {
     }
     window.onresize = getVideoHight;
     getVideoHight();
-  });
+  }, [lgPlay, smPlay]);
 
   //Get Promoted items
   const { data: promoted, isLoading, isError, FetchGet } = useGET();
@@ -66,19 +69,37 @@ const Home = () => {
   return (
     <Container fluid className="home-container bg-light">
       {/* -----------Video BG large screeens-------------- */}
-      <video autoPlay muted loop className="videoBg home-bg-lg" ref={videBgRef}>
+      <video
+        autoPlay
+        muted
+        loop
+        className="videoBg home-bg-lg"
+        ref={videBgRef}
+        onLoadedMetadata={() => setLgPlay(true)}
+      >
         <source src={VIDEO_LG_URL} type="video/mp4" />
       </video>
       {/* -----------Video BG smale screeens-------------- */}
-      <video autoPlay muted loop className="videoBg home-bg-sm" ref={videoSmRef}>
+      <video
+        autoPlay
+        muted
+        loop
+        className="videoBg home-bg-sm"
+        ref={videoSmRef}
+        onLoadedMetadata={() => setSmPlay(true)}
+      >
         <source src={VIDEO_SM_URL} type="video/mp4" />
       </video>
       {/* -----------Link to shopping / welcome text-------------- */}
       <div ref={welcomeRef} className="home-welcome-div">
-        <h1>Hållbara produkter på dina villkor</h1>
-        <Button variant="outline-light" className="rounded-pill p-2">
-          <Link to="/producs">Shoppa nu</Link>
-        </Button>
+        {lgPlay && smPlay && (
+          <>
+            <h1>Hållbara produkter på dina villkor</h1>
+            <Button variant="outline-light" className="rounded-pill p-2">
+              <Link to="/female">Shoppa nu</Link>
+            </Button>
+          </>
+        )}
       </div>
 
       {/* ------------Highlighted products */}

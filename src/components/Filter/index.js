@@ -1,11 +1,11 @@
 //Bootstrap
 import Form from 'react-bootstrap/Form';
 
-const Filter = ({ sort, setSort, filter, setFilter, size, setSize }) => {
+const Filter = ({ sort, setSort, filter, setFilter, size, setSize, sex }) => {
   return (
     <div>
       <h3>
-        <strong>Dam</strong>
+        <strong>{sex}</strong>
       </h3>
       <p>
         <strong>Sortera artiklar</strong>

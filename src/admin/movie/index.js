@@ -122,7 +122,7 @@ const Promoted = ({ handleRefreshVideo }) => {
               )}
               {isError && <div>{isError}</div>}
             </div>
-            <div style={{ 'font-size': '0.8rem' }}>
+            <div style={{ fontSize: '0.8rem' }}>
               <p className="m-0">
                 <strong>Stor Video: </strong>rek* 1920x1080
               </p>

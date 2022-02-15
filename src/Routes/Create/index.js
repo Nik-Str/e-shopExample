@@ -1,5 +1,5 @@
 //React
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import * as React from 'react';
 //Custom hooks
 import useGET from '../../hooks/useGET';
@@ -18,6 +18,8 @@ import Instagram from '../../components/Instagram';
 //Bootstrap
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
+//Import UserContext from App.js
+import { NavHeightContext } from '../../App';
 //Css
 import './style.css';
 
@@ -30,14 +32,12 @@ const URL_SOCIAL_MEDIA = 'http://localhost:8080/socialmedia';
 const Create = () => {
   //Set product container top margin
   const createRef = useRef(null);
+  const { navHeight } = useContext(NavHeightContext);
   useEffect(() => {
-    function getHeaderHight() {
-      let headerHight = document.querySelector('header').offsetHeight;
-      createRef.current.style.marginTop = `${headerHight + 30}px`;
+    if (navHeight !== 0) {
+      createRef.current.style.marginTop = `${navHeight + 30}px`;
     }
-    window.onresize = getHeaderHight;
-    getHeaderHight();
-  });
+  }, [navHeight]);
 
   //Referens for switching between admin windows
   const [promotedShow, setPromotedShow] = useState(true);
