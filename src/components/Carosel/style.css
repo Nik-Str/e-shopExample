@@ -14,8 +14,8 @@
   color: grey;
 }
 
-.carousel-control-next,
-.carousel-control-prev {
+.caroselRow .carousel-control-next,
+.caroselRow .carousel-control-prev {
   display: none;
 }
 

@@ -90,7 +90,7 @@ const Home = () => {
 
   return (
     <div ref={conterinerRef}>
-      <Container>
+      <Container id="productContainer">
         <Row className="d-flex d-lg-none col-12 px-5">
           <Button variant="outline-dark" onClick={() => setShow(true)}>
             <FilterIcon />
@@ -135,7 +135,11 @@ const Home = () => {
 
           {/* poducts articles */}
           <div className="col-12 col-lg-10 mb-5">
-            {isLoading && <Loading />}
+            {isLoading && (
+              <div id="loadingProduct">
+                <Loading />
+              </div>
+            )}
             {isError && <div>{isError}</div>}
             {Array.isArray(productsFiltered.data) && <ProductList products={productsFiltered.data} />}
           </div>

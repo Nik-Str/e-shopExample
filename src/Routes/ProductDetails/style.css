@@ -1,9 +1,24 @@
-/* blog details page */
-.blog-details h2 {
-  font-size: 20px;
-  color: #f1356d;
-  margin-bottom: 10px;
+#idContainer {
+  min-height: 40rem;
 }
-.blog-details div {
-  margin: 20px 0;
+
+#idLoading {
+  height: 30rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carouselProduct {
+  max-width: 40rem;
+}
+
+@media only screen and (max-width: 992px) {
+  .carouselProduct {
+    max-width: 100%;
+  }
+}
+
+.colorIMG {
+  max-width: 5rem;
 }

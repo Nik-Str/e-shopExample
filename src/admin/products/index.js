@@ -36,6 +36,8 @@ const Products = ({ handleRefreshProducts }) => {
   const [medium, setMedium] = useState(false);
   const [large, setLarge] = useState(false);
   const [xlarge, setXlarge] = useState(false);
+  const [material, setMaterial] = useState('');
+  const [color, setColor] = useState('');
 
   const fileOneRef = useRef(null);
   const fileTwoRef = useRef(null);
@@ -66,6 +68,8 @@ const Products = ({ handleRefreshProducts }) => {
     formData.append('medium', medium);
     formData.append('large', large);
     formData.append('xlarge', xlarge);
+    formData.append('material', material);
+    formData.append('color', color);
     FetchPost(URL_PRODUCT, formData);
   };
 
@@ -161,6 +165,11 @@ const Products = ({ handleRefreshProducts }) => {
                       onChange={(e) => setDescription(e.target.value)}
                     />
                   </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Label>Material</Form.Label>
+                    <Form.Control type="text" required value={material} onChange={(e) => setMaterial(e.target.value)} />
+                  </Form.Group>
                 </Accordion.Body>
               </Accordion.Item>
               <Accordion.Item eventKey="1">
@@ -193,6 +202,28 @@ const Products = ({ handleRefreshProducts }) => {
                     <Form.Check inline label="Medium" onChange={() => setMedium(!medium)} />
                     <Form.Check inline label="Large" onChange={() => setLarge(!large)} />
                     <Form.Check inline label="Xlarge" onChange={() => setXlarge(!xlarge)} />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Label>Färg</Form.Label>
+                    <Form.Select required value={color} onChange={(e) => setColor(e.target.value)}>
+                      <option>Svart</option>
+                      <option>Vit</option>
+                      <option>Grå</option>
+                      <option>Mörklila</option>
+                      <option>Mörkblå</option>
+                      <option>Citron</option>
+                      <option>Orange</option>
+                      <option>Röd</option>
+                      <option>Lila</option>
+                      <option>Blå</option>
+                      <option>Grön</option>
+                      <option>Ljusorange</option>
+                      <option>Ljusrosa</option>
+                      <option>Ljuslila</option>
+                      <option>Ljusblå</option>
+                      <option>Ljusgrön</option>
+                    </Form.Select>
                   </Form.Group>
                 </Accordion.Body>
               </Accordion.Item>

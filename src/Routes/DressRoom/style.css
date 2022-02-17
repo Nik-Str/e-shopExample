@@ -1,3 +1,14 @@
 .offcanvas-header .btn-close {
   background-color: rgba(0, 0, 0, 0.2);
 }
+
+#productContainer {
+  min-height: 40rem;
+}
+
+#loadingProduct {
+  height: 30rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

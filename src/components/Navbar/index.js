@@ -27,9 +27,6 @@ const NavbarHead = ({ setNavHeight }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //Set Logo typ
-  const width = window.innerWidth;
-
   return (
     <>
       <header ref={ref}>
